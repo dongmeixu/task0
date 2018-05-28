@@ -1,17 +1,17 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 import math
-import random
 import shutil
-
-import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 import os
-import matplotlib.image as mping
 import tensorflow as tf
 from sklearn.preprocessing import LabelEncoder
 import logging
+# sys.path.append("/search/odin/yangyuran/program/Anaconda3/envs/tensorflow/lib/python3.6/site-packages/")
 
 
 """
