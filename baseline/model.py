@@ -41,6 +41,7 @@ def avg_pool_3x3(x):
     return tf.nn.avg_pool(x, [1, 3, 3, 1], [1, 2, 2, 1], 'SAME')
 
 
+# 修改网络结构-添加可视化卷积层的方法
 def inference(features, one_hot_labels, batch_size, n_classes):
     # network structure
     # conv1
@@ -48,6 +49,17 @@ def inference(features, one_hot_labels, batch_size, n_classes):
         W_conv1 = weight_variable([3, 3, 3, 16], stddev=0.1)
         b_conv1 = bias_variable([16])
         h_conv1 = tf.nn.relu(conv2d(features, W_conv1) + b_conv1)
+        with tf.variable_scope("visualization"):
+            x_min = tf.reduce_min(W_conv1)
+            x_max = tf.reduce_max(W_conv1)
+            kernel_0_to_1 = (W_conv1 - x_min) / (x_max - x_min)
+            # to tf.image_summary format [batch_size, height, width, channels]
+            kernel_transposed = tf.transpose(kernel_0_to_1, [3, 0, 1, 2])
+            # this will display random 3 filters from the 64 in conv1
+            tf.summary.image("conv1/filters", kernel_transposed[:, :, :, :3], max_outputs=3)
+            layer_image = h_conv1[0: 1, :, :, 0: 16]
+            layer_image = tf.transpose(layer_image, perm=[3, 1, 2, 0])
+            tf.summary.image("filtered_image_layer", layer_image, max_outputs=16)
 
     with tf.variable_scope("pooling1_lrn"):
         h_pool1 = max_pool_3x3(h_conv1)
@@ -59,6 +71,17 @@ def inference(features, one_hot_labels, batch_size, n_classes):
         W_conv2 = weight_variable([3, 3, 16, 16], stddev=0.1)
         b_conv2 = bias_variable([16])
         h_conv2 = tf.nn.relu(conv2d(norm1, W_conv2) + b_conv2)
+        with tf.variable_scope("visualization"):
+            x_min = tf.reduce_min(W_conv2)
+            x_max = tf.reduce_max(W_conv2)
+            kernel_0_to_1 = (W_conv2 - x_min) / (x_max - x_min)
+            # to tf.image_summary format [batch_size, height, width, channels]
+            kernel_transposed = tf.transpose(kernel_0_to_1, [3, 0, 1, 2])
+            # this will display random 3 filters from the 64 in conv1
+            tf.summary.image("conv2/filters", kernel_transposed[:, :, :, :3], max_outputs=3)
+            layer_image = h_conv2[0: 1, :, :, 0: 16]
+            layer_image = tf.transpose(layer_image, perm=[3, 1, 2, 0])
+            tf.summary.image("filtered_image_layer", layer_image, max_outputs=16)
 
     # norm2
     with tf.variable_scope("pooling2_lrn"):
@@ -71,6 +94,17 @@ def inference(features, one_hot_labels, batch_size, n_classes):
         b_conv3 = bias_variable([64])
         h_conv3 = tf.nn.relu(conv2d(h_pool2, W_conv3) + b_conv3)
         h_pool3 = max_pool_3x3(h_conv3)
+        with tf.variable_scope("visualization"):
+            x_min = tf.reduce_min(W_conv3)
+            x_max = tf.reduce_max(W_conv3)
+            kernel_0_to_1 = (W_conv3 - x_min) / (x_max - x_min)
+            # to tf.image_summary format [batch_size, height, width, channels]
+            kernel_transposed = tf.transpose(kernel_0_to_1, [3, 0, 1, 2])
+            # this will display random 3 filters from the 64 in conv1
+            tf.summary.image("conv2/filters", kernel_transposed[:, :, :, :3], max_outputs=3)
+            layer_image = h_conv3[0: 1, :, :, 0: 16]
+            layer_image = tf.transpose(layer_image, perm=[3, 1, 2, 0])
+            tf.summary.image("filtered_image_layer", layer_image, max_outputs=16)
 
     # fc1
     with tf.variable_scope("fc1"):
