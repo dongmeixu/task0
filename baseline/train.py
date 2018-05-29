@@ -27,15 +27,15 @@ IMG_W = 256  # resize the image, if the input image is too large, training will 
 IMG_H = 256
 IMG_C = 3
 RATIO = 0.2  # take 20% of dataset as validation data
-BATCH_SIZE = 32
+BATCH_SIZE = 16
 CAPACITY = 100 + 3 * BATCH_SIZE
 MAX_STEP = 3000  # with current parameters, it is suggested to use MAX_STEP>10k
 learning_rate = 0.0001  # with current parameters, it is suggested to use learning rate<0.0001
 
 train_dir = '/search/odin/xudongmei/working/datasets/bak2_crop/train_split/'
 test_dir = '/search/odin/xudongmei/working/datasets/bak2_crop/test_split/'
-logs_train_dir = './logs/train/batch_size=32/'
-logs_val_dir = './logs/val/batch_size=32/'
+logs_train_dir = './logs/train/batch_size=16/'
+logs_val_dir = './logs/val/batch_size=16/'
 LOGNAME = 'maps'
 
 
